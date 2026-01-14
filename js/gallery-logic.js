@@ -1,7 +1,8 @@
-const IMAGE_FOLDER = './Vips/';
+const VIP_FOLDER = './Vips/';
+const PNG_FOLDER = './PNG/';
 const galleryRoot = document.getElementById('gallery-root');
 
-const imageFiles = [
+const vipFiles = [
     '1b31c658-2f0d-41d7-95a6-98cd1407112e.png',
     '3682f1ff-92a3-42e8-9ed0-fb5236a3e8d9.png',
     'A_digital_2D_badge_showcases_the_ranking_or_tier_n.png',
@@ -25,23 +26,33 @@ const imageFiles = [
     'VRChat_2026-01-10_17-25-05.666_7680x4320.png'
 ];
 
+const pngFiles = [
+    '1.png', '2.jpg', '3.jpg', '4.png', '5.png', '6.jpg', '7.png', '8.jpg', '9.png',
+    '10.png', '11.png', '12.png', '13.png', '14.png', '15.png', '16.jpg', '17.png',
+    '18.png', '19.jpg', '20.jpg', '21.png', '22.png', '23.png', '24.png', '25.jpg',
+    '26.png', '27.png', '28.png', '29.png', '30.png', '31.png', '32.jpg', '33.jpg'
+];
+
+function createGalleryItem(folder, fileName, index) {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.style.animationDelay = `${index * 0.05}s`;
+
+    const img = document.createElement('img');
+    img.src = `${folder}${fileName}`;
+    img.alt = 'Gallery Image';
+    img.loading = 'lazy';
+
+    item.appendChild(img);
+    item.addEventListener('click', () => openLightbox(`${folder}${fileName}`));
+    return item;
+}
+
 function initGallery() {
     const fragment = document.createDocumentFragment();
 
-    imageFiles.forEach((fileName, index) => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.style.animationDelay = `${index * 0.1}s`;
-
-        const img = document.createElement('img');
-        img.src = `${IMAGE_FOLDER}${fileName}`;
-        img.alt = 'Vip Image';
-        img.loading = 'lazy';
-        
-        item.appendChild(img);
-        item.addEventListener('click', () => openLightbox(`${IMAGE_FOLDER}${fileName}`));
-        fragment.appendChild(item);
-    });
+    vipFiles.forEach((file, i) => fragment.appendChild(createGalleryItem(VIP_FOLDER, file, i)));
+    pngFiles.forEach((file, i) => fragment.appendChild(createGalleryItem(PNG_FOLDER, file, i + vipFiles.length)));
 
     galleryRoot.appendChild(fragment);
 }
